@@ -655,8 +655,13 @@ func (a *Agent) setSelectedPair(p *candidatePair) {
 }
 
 func (a *Agent) pingAllCandidates() {
-	for _, p := range a.checklist {
+	a.log.Trace("pinging all candidates")
 
+	if len(a.checklist) == 0 {
+		a.log.Warn("pingAllCandidates called with no candidate pairs")
+	}
+
+	for _, p := range a.checklist {
 		if p.state == CandidatePairStateWaiting {
 			p.state = CandidatePairStateInProgress
 		} else if p.state != CandidatePairStateInProgress {
